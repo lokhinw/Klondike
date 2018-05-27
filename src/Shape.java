@@ -1,5 +1,4 @@
 import java.awt.*;
-import hsa.Console;
 
 public abstract class Shape
 {

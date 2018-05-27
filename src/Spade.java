@@ -1,6 +1,4 @@
 import java.awt.*;
-import hsa.Console;
-
 public class Spade extends Suit {
 	public Spade() {
 

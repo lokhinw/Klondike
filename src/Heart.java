@@ -1,5 +1,4 @@
 import java.awt.*;
-import hsa.Console;
 
 public class Heart extends Suit {
 

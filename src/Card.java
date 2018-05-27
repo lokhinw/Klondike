@@ -1,8 +1,7 @@
 import java.awt.*;
-import hsa.Console;
 
 public class Card extends Shape {
-	private int faceValue, suit, size;
+	private int faceValue, suit;
 	private boolean faceUp;
 	private char[] cardValues = new char[] { 'A', '2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K' };
 

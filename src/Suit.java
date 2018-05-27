@@ -1,6 +1,3 @@
-import java.awt.*;
-import hsa.Console;
-
 public abstract class Suit extends Shape
 {
     public void setWidth (int nWidth)
