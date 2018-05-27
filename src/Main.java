@@ -13,7 +13,8 @@ public class Main extends Applet implements MouseListener, MouseMotionListener {
 	final int CARD_HEIGHT = 80;
 	final int CARD_WIDTH = 56;
 
-	Graphics g;
+	Graphics bufferGraphics;
+	Image offscreen;
 
 	public void init() {
 
@@ -21,6 +22,10 @@ public class Main extends Applet implements MouseListener, MouseMotionListener {
 		setBackground(new Color(7, 89, 45));
 		addMouseListener(this);
 		addMouseMotionListener(this);
+
+		offscreen = createImage(500, 550);
+		bufferGraphics = offscreen.getGraphics();
+
 		stock.setSize(CARD_HEIGHT);
 		stock.setCenter(44, 60);
 		stock.setColor(Color.ORANGE);
@@ -29,7 +34,6 @@ public class Main extends Applet implements MouseListener, MouseMotionListener {
 		hand.setCenter(114, 60);
 		hand.setColor(Color.ORANGE);
 
-		g = getGraphics();
 		// stock.shuffle();
 
 		for (int i = 0; i < 7; i++) {
@@ -51,41 +55,56 @@ public class Main extends Applet implements MouseListener, MouseMotionListener {
 	}
 
 	public void paint(Graphics g) {
-		g.setColor(new Color(1, 173, 86));
-		g.fillRoundRect(16, 20, CARD_WIDTH, CARD_HEIGHT, 5, 5);
-		g.setColor(new Color(0, 110, 55));
-		g.drawRoundRect(16, 20 - 1, CARD_WIDTH - 1, CARD_HEIGHT, 5, 5);
 
-		g.setColor(new Color(1, 173, 86));
-		g.fillRoundRect(85, 20, CARD_WIDTH, CARD_HEIGHT, 5, 5);
-		g.setColor(new Color(0, 110, 55));
-		g.drawRoundRect(16, 20 - 1, CARD_WIDTH - 1, CARD_HEIGHT, 5, 5);
+		bufferGraphics.clearRect(0, 0, 500, 550);
+
+		bufferGraphics.setColor(new Color(1, 173, 86));
+		bufferGraphics.fillRoundRect(16, 20, CARD_WIDTH, CARD_HEIGHT, 5, 5);
+		bufferGraphics.setColor(new Color(0, 110, 55));
+		bufferGraphics.drawRoundRect(16, 20 - 1, CARD_WIDTH - 1, CARD_HEIGHT, 5, 5);
+
+		bufferGraphics.setColor(new Color(1, 173, 86));
+		bufferGraphics.fillRoundRect(85, 20, CARD_WIDTH, CARD_HEIGHT, 5, 5);
+		bufferGraphics.setColor(new Color(0, 110, 55));
+		bufferGraphics.drawRoundRect(16, 20 - 1, CARD_WIDTH - 1, CARD_HEIGHT, 5, 5);
 
 		for (int i = 0; i < 4; i++) {
-			g.setColor(new Color(1, 173, 86));
-			g.fillRoundRect(223 + (69 * i), 20, CARD_WIDTH, CARD_HEIGHT, 5, 5);
-			g.setColor(new Color(0, 110, 55));
-			g.drawRoundRect(223 + (69 * i), 20 - 1, CARD_WIDTH - 1, CARD_HEIGHT, 5, 5);
+			bufferGraphics.setColor(new Color(1, 173, 86));
+			bufferGraphics.fillRoundRect(223 + (69 * i), 20, CARD_WIDTH, CARD_HEIGHT, 5, 5);
+			bufferGraphics.setColor(new Color(0, 110, 55));
+			bufferGraphics.drawRoundRect(223 + (69 * i), 20 - 1, CARD_WIDTH - 1, CARD_HEIGHT, 5, 5);
 		}
 
 		for (int i = 0; i < 7; i++) {
-			g.setColor(new Color(1, 173, 86));
-			g.fillRoundRect(16 + (69 * i), 120, CARD_WIDTH, CARD_HEIGHT, 5, 5);
-			g.setColor(new Color(0, 110, 55));
-			g.drawRoundRect(16 + (69 * i), 120 - 1, CARD_WIDTH - 1, CARD_HEIGHT, 5, 5);
+			bufferGraphics.setColor(new Color(1, 173, 86));
+			bufferGraphics.fillRoundRect(16 + (69 * i), 120, CARD_WIDTH, CARD_HEIGHT, 5, 5);
+			bufferGraphics.setColor(new Color(0, 110, 55));
+			bufferGraphics.drawRoundRect(16 + (69 * i), 120 - 1, CARD_WIDTH - 1, CARD_HEIGHT, 5, 5);
 		}
 
 		for (int i = 0; i < 7; i++) {
 			tableau[i].setCenter(44 + (69 * i), 160);
-			tableau[i].draw(g, 't');
+			tableau[i].draw(bufferGraphics, 't');
 		}
 
-		stock.draw(g, 's');
-		hand.draw(g, 'w');
+		stock.draw(bufferGraphics, 's');
+		hand.draw(bufferGraphics, 'w');
+
+		g.drawImage(offscreen, 0, 0, this);
+	}
+
+	public void update(Graphics g) {
+		paint(g);
 	}
 
 	public void mouseDragged(MouseEvent e) {
+		if (stock.isPointInside(e.getX(), e.getY()) == true) {
+			stock.setCenter(e.getX(), e.getY());
+			repaint();
+		}
+	}
 
+	public void mousePressed(MouseEvent e) {
 	}
 
 	public void mouseMoved(MouseEvent e) {
@@ -140,10 +159,6 @@ public class Main extends Applet implements MouseListener, MouseMotionListener {
 
 	public void mouseExited(MouseEvent e) {
 		// TODO Auto-generated method stub
-
-	}
-
-	public void mousePressed(MouseEvent e) {
 
 	}
 
