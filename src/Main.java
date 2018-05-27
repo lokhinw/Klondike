@@ -6,13 +6,15 @@ public class Main extends Applet implements MouseListener, MouseMotionListener {
 
 	Deck d1 = new Deck('s');
 	Deck d2 = new Deck();
+	Deck[] tableau = new Deck[7];
+
 	Graphics g;
 
 	public void init() {
 		g = getGraphics();
 		d1.shuffle();
 
-		setSize(500, 500);
+		setSize(500, 550);
 		setBackground(new Color(7, 89, 45));
 		addMouseListener(this);
 		addMouseMotionListener(this);
@@ -23,13 +25,24 @@ public class Main extends Applet implements MouseListener, MouseMotionListener {
 		d2.setSize(80);
 		d2.setCenter(112, 60);
 		d2.setColor(Color.ORANGE);
-		for (int i = 0; i < 28; i++) {
-			d1.removeTopCard();
+
+		for (int i = 0; i < 7; i++) {
+			tableau[i] = new Deck();
+			for (int j = 0; j < i + 1; j++) {
+				Card card = d1.getTopCard();
+				if (i == j) {
+					card.setFaceUp(true);
+				}
+				tableau[i].setSize(80);
+				tableau[i].setColor(Color.ORANGE);
+				tableau[i].addCard(card);
+				d1.removeTopCard();
+			}
 		}
+
 	}
 
 	public void paint(Graphics g) {
-
 		g.setColor(new Color(1, 173, 86));
 		g.fillRoundRect(16, 20, 56, 80, 5, 5);
 		g.setColor(new Color(0, 110, 55));
@@ -42,13 +55,25 @@ public class Main extends Applet implements MouseListener, MouseMotionListener {
 
 		for (int i = 0; i < 4; i++) {
 			g.setColor(new Color(1, 173, 86));
-			g.fillRoundRect(220 + (69 * i), 20, 56, 80, 5, 5);
+			g.fillRoundRect(223 + (69 * i), 20, 56, 80, 5, 5);
 			g.setColor(new Color(0, 110, 55));
-			g.drawRoundRect(220 + (69 * i), 20 - 1, 56 - 1, 80, 5, 5);
+			g.drawRoundRect(223 + (69 * i), 20 - 1, 56 - 1, 80, 5, 5);
 		}
 
+		for (int i = 0; i < 7; i++) {
+			g.setColor(new Color(1, 173, 86));
+			g.fillRoundRect(16 + (69 * i), 120, 56, 80, 5, 5);
+			g.setColor(new Color(0, 110, 55));
+			g.drawRoundRect(16 + (69 * i), 120 - 1, 56 - 1, 80, 5, 5);
+		}
+
+		for (int i = 0; i < 7; i++) {
+			tableau[i].setCenter(44 + (69 * i), 160);
+			tableau[i].draw(g, 't');
+		}
+		
 		d1.draw(g, 's');
-		d2.draw(g, 'w');
+		d2.draw(g ,'w');
 	}
 
 	public void mouseDragged(MouseEvent e) {

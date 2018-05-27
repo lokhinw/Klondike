@@ -142,6 +142,15 @@ public class Deck extends Shape {
 				}
 			}
 
+			if (deckType == 't') {
+				for (int i = 0; i < deck.size(); i++) {
+					Card card = (Card) getCard(i);
+					card.setCenter(getCenterX(), getCenterY() + (i * 30));
+					card.setColor(getColor());
+					card.setSize(getHeight());
+					card.draw(g);
+				}
+			}
 		}
 	}
 
