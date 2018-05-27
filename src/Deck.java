@@ -110,46 +110,38 @@ public class Deck extends Shape {
 		}
 	}
 
-	public void draw(Console c) {
+	public void draw(Graphics g) {
 		if (deck.size() > 0) {
 			Card card = (Card) deck.lastElement();
 			card.setCenter(getCenterX(), getCenterY());
 			card.setColor(getColor());
 			card.setSize(getHeight());
-			card.draw(c);
+			card.draw(g);
 		}
 	}
 
-	public void draw(Graphics g) {
-		// if (deck.size() > 0) {
-		// Card card = (Card) deck.lastElement();
-		// card.setCenter(getCenterX(), getCenterY());
-		// card.setColor(getColor());
-		// card.setSize(getHeight());
-		// card.draw(g);
-		// }
-
+	public void draw(Graphics g, char deckType) {
 		if (deck.size() > 0) {
-			for (int i = 0; i < deck.size() / 3; i++) {
-				Card card = (Card) deck.lastElement();
-				card.setCenter(getCenterX() - i, getCenterY() - i);
-				card.setColor(getColor());
-				card.setSize(getHeight());
-				card.draw(g);
+			if (deckType == 's') {
+				for (int i = 0; i < deck.size() / 3; i++) {
+					Card card = (Card) deck.lastElement();
+					card.setCenter(getCenterX() - i, getCenterY() - i);
+					card.setColor(getColor());
+					card.setSize(getHeight());
+					card.draw(g);
+				}
 			}
-		}
 
-	}
-
-	public void drawThree(Graphics g) {
-		if (deck.size() > 0) {
-			for (int i = 0; i < 3; i++) {
-				Card card = (Card) getCard(deck.size() - 3 + i);
-				card.setCenter(getCenterX() + (i * 30), getCenterY());
-				card.setColor(getColor());
-				card.setSize(getHeight());
-				card.draw(g);
+			if (deckType == 'w') {
+				for (int i = 0; i < 3; i++) {
+					Card card = (Card) getCard(deck.size() - 3 + i);
+					card.setCenter(getCenterX() + (i * 30), getCenterY());
+					card.setColor(getColor());
+					card.setSize(getHeight());
+					card.draw(g);
+				}
 			}
+
 		}
 	}
 

@@ -47,8 +47,8 @@ public class Main extends Applet implements MouseListener, MouseMotionListener {
 			g.drawRoundRect(220 + (69 * i), 20 - 1, 56 - 1, 80, 5, 5);
 		}
 
-		d1.draw(g);
-		d2.drawThree(g);
+		d1.draw(g, 's');
+		d2.draw(g, 'w');
 	}
 
 	public void mouseDragged(MouseEvent e) {
@@ -64,16 +64,16 @@ public class Main extends Applet implements MouseListener, MouseMotionListener {
 		if (d1.isPointInside(e.getX(), e.getY()) == true) {
 			if (d1.getDeckLength() == 0) {
 				for (int i = 0; i < 24; i++) {
-					Card c1 = d2.getTopCard();
-					c1.setFaceUp(false);
-					d1.addCard(c1);
+					Card card = d2.getTopCard();
+					card.setFaceUp(false);
+					d1.addCard(card);
 					d2.removeTopCard();
 				}
 			} else {
 				for (int i = 0; i < 3; i++) {
-					Card c1 = d1.getTopCard();
-					c1.setFaceUp(true);
-					d2.addCard(c1);
+					Card card = d1.getTopCard();
+					card.setFaceUp(true);
+					d2.addCard(card);
 					d1.removeTopCard();
 				}
 			}

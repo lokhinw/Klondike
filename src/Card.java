@@ -74,56 +74,6 @@ public class Card extends Shape {
 		return faceUp;
 	}
 
-	public void draw(Console c) {
-		int height = getHeight();
-		int width = getWidth();
-		int centerX = getCenterX();
-		int centerY = getCenterY();
-		Font cardFont = new Font("Palatino", Font.BOLD, (int) (Math.round(height * 0.17)));
-
-		if (faceUp) {
-			c.setColor(Color.WHITE);
-			c.fillRoundRect(centerX - width / 2, centerY - height / 2, width, height, 5, 5);
-			c.setColor(Color.BLACK);
-			c.drawRoundRect(centerX - width / 2 - 1, centerY - height / 2 - 1, width, height, 5, 5);
-
-			if (suit == 1) {
-				Spade spade = new Spade();
-				spade.setCenter(centerX, centerY);
-				spade.setHeight((int) (Math.round(height * 0.25)));
-				spade.setColor(Color.BLACK);
-				spade.draw(c);
-			} else if (suit == 2) {
-				Diamond diamond = new Diamond();
-				diamond.setCenter(centerX, centerY);
-				diamond.setHeight((int) (Math.round(height * 0.25)));
-				diamond.setColor(Color.RED);
-				diamond.draw(c);
-			} else if (suit == 3) {
-				Club club = new Club();
-				club.setCenter(centerX, centerY);
-				club.setHeight((int) (Math.round(height * 0.25)));
-				club.setColor(Color.BLACK);
-				club.draw(c);
-			} else if (suit == 4) {
-				Heart heart = new Heart();
-				heart.setCenter(centerX, centerY);
-				heart.setHeight((int) (Math.round(height * 0.25)));
-				heart.setColor(Color.RED);
-				heart.draw(c);
-			}
-			c.setFont(cardFont);
-			c.drawString(String.valueOf(cardValues[faceValue - 1]), centerX - width / 2 + width / 16,
-					centerY - height / 3);
-		} else {
-			c.setColor(getColor());
-			c.fillRoundRect(centerX - width / 2, centerY - height / 2, width, height, 5, 5);
-			c.setColor(Color.BLACK);
-			c.drawRoundRect(centerX - width / 2, centerY - height / 2 - 1, width - 1, height, 5, 5);
-		}
-		c.setColor(getColor());
-	}
-
 	public void draw(Graphics g) {
 		int height = getHeight();
 		int width = getWidth();
@@ -172,29 +122,5 @@ public class Card extends Shape {
 			g.drawRoundRect(centerX - width / 2, centerY - height / 2 - 1, width - 1, height, 5, 5);
 		}
 		g.setColor(getColor());
-	}
-
-	public void erase(Console c) {
-		int height = getHeight();
-		int width = getWidth();
-		int centerX = getCenterX();
-		int centerY = getCenterY();
-		Color oldColor = getColor();
-
-		c.setColor(Color.WHITE);
-		c.fillRect(centerX - width / 2, centerY - height / 2, width + 1, height + 1);
-		c.setColor(oldColor);
-	}
-
-	public void erase(Graphics g) {
-		int height = getHeight();
-		int width = getWidth();
-		int centerX = getCenterX();
-		int centerY = getCenterY();
-		Color oldColor = getColor();
-
-		g.setColor(Color.WHITE);
-		g.clearRect(centerX - width / 2, centerY - height / 2, width, height);
-		g.setColor(oldColor);
 	}
 }

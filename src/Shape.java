@@ -6,7 +6,6 @@ public abstract class Shape
     protected int width, height, centerX, centerY;
     protected Color color;
 
-    public abstract void draw (Console c);
     public abstract void draw (Graphics g);
 
     public void setWidth (int nWidth)
@@ -82,15 +81,6 @@ public abstract class Shape
         }
         return false;
     }
-
-    public void erase (Console c)
-    {
-	Color cOldColor = getColor ();
-	setColor (Color.WHITE);
-	draw (c);
-	setColor (cOldColor);
-    }
-
 
     public void erase (Graphics g)
     {
