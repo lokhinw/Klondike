@@ -5,19 +5,18 @@ import java.awt.event.*;
 public class Main extends Applet implements MouseListener, MouseMotionListener {
 
 	Deck stock = new Deck('s');
-	Deck waste = new Deck();
-	Deck hand = new Deck();
+	Waste waste = new Waste();
+	Waste hand = new Waste();
 	Deck[] tableau = new Deck[7];
 	Deck[] foundation = new Deck[4];
-
-	final int CARD_HEIGHT = 80;
-	final int CARD_WIDTH = 56;
 
 	Graphics bufferGraphics;
 	Image offscreen;
 
-	public void init() {
+	final int CARD_HEIGHT = 80;
+	final int CARD_WIDTH = 56;
 
+	public void init() {
 		setSize(500, 550);
 		setBackground(new Color(7, 89, 45));
 		addMouseListener(this);
@@ -34,10 +33,11 @@ public class Main extends Applet implements MouseListener, MouseMotionListener {
 		hand.setCenter(114, 60);
 		hand.setColor(Color.ORANGE);
 
-		// stock.shuffle();
+		stock.shuffle();
 
 		for (int i = 0; i < 7; i++) {
 			tableau[i] = new Deck();
+			tableau[i].setCenter(44 + (69 * i), 160);
 			for (int j = 0; j < i + 1; j++) {
 				Card card = stock.getTopCard();
 				if (i == j) {
@@ -49,14 +49,16 @@ public class Main extends Applet implements MouseListener, MouseMotionListener {
 				stock.removeTopCard();
 			}
 		}
-		for (int i = 0; i < 19; i++) {
-			stock.removeTopCard();
-		}
+		 for (int i = 0; i < 19; i++) {
+		 stock.removeTopCard();
+		 }
 	}
 
 	public void paint(Graphics g) {
 
 		bufferGraphics.clearRect(0, 0, 500, 550);
+
+		showStatus("Score: 0");
 
 		bufferGraphics.setColor(new Color(1, 173, 86));
 		bufferGraphics.fillRoundRect(16, 20, CARD_WIDTH, CARD_HEIGHT, 5, 5);
@@ -83,12 +85,11 @@ public class Main extends Applet implements MouseListener, MouseMotionListener {
 		}
 
 		for (int i = 0; i < 7; i++) {
-			tableau[i].setCenter(44 + (69 * i), 160);
 			tableau[i].draw(bufferGraphics, 't');
 		}
 
 		stock.draw(bufferGraphics, 's');
-		hand.draw(bufferGraphics, 'w');
+		hand.draw(bufferGraphics);
 
 		g.drawImage(offscreen, 0, 0, this);
 	}
@@ -98,10 +99,21 @@ public class Main extends Applet implements MouseListener, MouseMotionListener {
 	}
 
 	public void mouseDragged(MouseEvent e) {
-		if (stock.isPointInside(e.getX(), e.getY()) == true) {
-			stock.setCenter(e.getX(), e.getY());
+		for (int i = 0; i < 7; i++) {
+			if (tableau[i].isPointInside(e.getX(), e.getY()) == true) {
+				tableau[i].setCenter(e.getX(), e.getY());
+				repaint();
+			}
+		}
+		if (hand.isPointInside(e.getX(), e.getY()) == true) {
+			hand.setCurrentPosition(e.getX(), e.getY());
 			repaint();
 		}
+	}
+
+	public void mouseReleased(MouseEvent e) {
+		hand.setCurrentPosition(114, 60);
+		repaint();
 	}
 
 	public void mousePressed(MouseEvent e) {
@@ -161,10 +173,4 @@ public class Main extends Applet implements MouseListener, MouseMotionListener {
 		// TODO Auto-generated method stub
 
 	}
-
-	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
 }

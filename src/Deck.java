@@ -8,13 +8,13 @@ public class Deck extends Shape {
 	public Deck() {
 		setSize(120);
 		setCenter(100, 100);
-		setColor(Color.black);
+		setColor(Color.BLACK);
 	}
 
 	public Deck(char deckType) {
 		setSize(120);
 		setCenter(100, 100);
-		setColor(Color.black);
+		setColor(Color.BLACK);
 
 		if (deckType == 's') {
 			for (int i = 1; i <= 13; i++) {
