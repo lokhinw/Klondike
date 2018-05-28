@@ -96,7 +96,9 @@ public class Main extends Applet implements MouseListener, MouseMotionListener {
 		}
 
 		stock.draw(bufferGraphics, 's');
-		foundation[0].draw(bufferGraphics);
+		for (int i = 0; i < 4; i++) {
+			foundation[i].draw(bufferGraphics);
+		}
 		hand.draw(bufferGraphics);
 
 		g.drawImage(offscreen, 0, 0, this);
@@ -120,9 +122,16 @@ public class Main extends Applet implements MouseListener, MouseMotionListener {
 	}
 
 	public void mouseReleased(MouseEvent e) {
-		if (foundation[0].isPointInside(e.getX(), e.getY()) == true) {
-			foundation[0].addCard(hand.getBottomCard());
-			hand.removeBottomCard();
+		if (hand.getLength() > 0) {
+			for (int i = 0; i < 4; i++) {
+				if (hand.getLength() > 0) {
+					if (foundation[i].isValidMove(e.getX(), e.getY(), hand.getTopCard().getFaceValue(),
+							hand.getTopCard().getSuit()) == true) {
+						foundation[i].addCard(hand.getTopCard());
+						hand.removeTopCard();
+					}
+				}
+			}
 		}
 		hand.setCurrentPosition(114 + (hand.getLength() - 1) * 30, 60);
 		repaint();

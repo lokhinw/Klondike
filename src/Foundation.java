@@ -1,6 +1,8 @@
 import java.awt.Graphics;
 
 public class Foundation extends Deck {
+	private int currentValue, currentSuit;
+
 	// private int currentPosX, currentPosY;
 	//
 	// public Waste() {
@@ -21,14 +23,21 @@ public class Foundation extends Deck {
 	// return currentPosY;
 	// }
 	//
-	// public boolean isPointInside(int x, int y) {
-	// if (x >= currentPosX - getWidth() / 2 && x <= currentPosX + getWidth() / 2 &&
-	// y >= currentPosY - getHeight() / 2
-	// && y <= currentPosY + getHeight() / 2) {
-	// return true;
-	// }
-	// return false;
-	// }
+	public boolean isValidMove(int x, int y, int value, int suit) {
+		if (x >= getCenterX() - getWidth() / 2 && x <= getCenterX() + getWidth() / 2
+				&& y >= getCenterY() - getHeight() / 2 && y <= getCenterY() + getHeight() / 2) {
+			if (currentValue == 0 && value == 1) {
+				currentValue = value;
+				currentSuit = suit;
+				return true;
+			} else if (currentValue++ == value && currentSuit == suit) {
+				currentValue = value;
+				currentSuit = suit;
+				return true;
+			}
+		}
+		return false;
+	}
 
 	public void draw(Graphics g) {
 		for (int i = 0; i < deck.size(); i++) {
