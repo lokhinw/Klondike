@@ -8,7 +8,7 @@ public class Main extends Applet implements MouseListener, MouseMotionListener {
 	Waste waste = new Waste();
 	Waste hand = new Waste();
 	Deck[] tableau = new Deck[7];
-	Deck[] foundation = new Deck[4];
+	Foundation[] foundation = new Foundation[4];
 
 	Graphics bufferGraphics;
 	Image offscreen;
@@ -33,7 +33,14 @@ public class Main extends Applet implements MouseListener, MouseMotionListener {
 		hand.setCenter(114, 60);
 		hand.setColor(Color.ORANGE);
 
-		stock.shuffle();
+		// stock.shuffle();
+
+		for (int i = 0; i < 4; i++) {
+			foundation[i] = new Foundation();
+			foundation[i].setCenter(223 + (69 * i) + CARD_WIDTH / 2, 20 + CARD_HEIGHT / 2);
+			foundation[i].setSize(CARD_HEIGHT);
+			foundation[i].setColor(Color.ORANGE);
+		}
 
 		for (int i = 0; i < 7; i++) {
 			tableau[i] = new Deck();
@@ -49,9 +56,9 @@ public class Main extends Applet implements MouseListener, MouseMotionListener {
 				stock.removeTopCard();
 			}
 		}
-		for (int i = 0; i < 19; i++) {
-			stock.removeTopCard();
-		}
+		// for (int i = 0; i < 19; i++) {
+		// stock.removeTopCard();
+		// }
 	}
 
 	public void paint(Graphics g) {
@@ -89,6 +96,7 @@ public class Main extends Applet implements MouseListener, MouseMotionListener {
 		}
 
 		stock.draw(bufferGraphics, 's');
+		foundation[0].draw(bufferGraphics);
 		hand.draw(bufferGraphics);
 
 		g.drawImage(offscreen, 0, 0, this);
@@ -112,6 +120,10 @@ public class Main extends Applet implements MouseListener, MouseMotionListener {
 	}
 
 	public void mouseReleased(MouseEvent e) {
+		if (foundation[0].isPointInside(e.getX(), e.getY()) == true) {
+			foundation[0].addCard(hand.getBottomCard());
+			hand.removeBottomCard();
+		}
 		hand.setCurrentPosition(114 + (hand.getLength() - 1) * 30, 60);
 		repaint();
 	}
