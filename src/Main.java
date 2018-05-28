@@ -7,7 +7,7 @@ public class Main extends Applet implements MouseListener, MouseMotionListener {
 	Deck stock = new Deck('s');
 	Waste waste = new Waste();
 	Waste hand = new Waste();
-	Deck[] tableau = new Deck[7];
+	Tableau[] tableau = new Tableau[7];
 	Foundation[] foundation = new Foundation[4];
 
 	Graphics bufferGraphics;
@@ -43,7 +43,7 @@ public class Main extends Applet implements MouseListener, MouseMotionListener {
 		}
 
 		for (int i = 0; i < 7; i++) {
-			tableau[i] = new Deck();
+			tableau[i] = new Tableau();
 			tableau[i].setCenter(44 + (69 * i), 160);
 			for (int j = 0; j < i + 1; j++) {
 				Card card = stock.getTopCard();
@@ -55,6 +55,8 @@ public class Main extends Applet implements MouseListener, MouseMotionListener {
 				tableau[i].addCard(card);
 				stock.removeTopCard();
 			}
+			System.out.println(tableau[i].getLength());
+			tableau[i].setCurrentPosition(44 + (69 * i), 160 + (tableau[i].getLength() - 1) * 30);
 		}
 		// for (int i = 0; i < 19; i++) {
 		// stock.removeTopCard();
@@ -92,7 +94,7 @@ public class Main extends Applet implements MouseListener, MouseMotionListener {
 		}
 
 		for (int i = 0; i < 7; i++) {
-			tableau[i].draw(bufferGraphics, 't');
+			tableau[i].draw(bufferGraphics);
 		}
 
 		stock.draw(bufferGraphics, 's');
@@ -111,7 +113,7 @@ public class Main extends Applet implements MouseListener, MouseMotionListener {
 	public void mouseDragged(MouseEvent e) {
 		for (int i = 0; i < 7; i++) {
 			if (tableau[i].isPointInside(e.getX(), e.getY()) == true) {
-				tableau[i].setCenter(e.getX(), e.getY());
+				tableau[i].setCurrentPosition(e.getX(), e.getY());
 				repaint();
 			}
 		}
@@ -132,9 +134,15 @@ public class Main extends Applet implements MouseListener, MouseMotionListener {
 					}
 				}
 			}
+			hand.setCurrentPosition(114 + (hand.getLength() - 1) * 30, 60);
+			repaint();
 		}
-		hand.setCurrentPosition(114 + (hand.getLength() - 1) * 30, 60);
-		repaint();
+
+		for (int i = 0; i < 7; i++) {
+			tableau[i].setCurrentPosition(44 + (69 * i), 160 + (tableau[i].getLength() - 1) * 30);
+			repaint();
+		}
+
 	}
 
 	public void mousePressed(MouseEvent e) {
@@ -181,6 +189,7 @@ public class Main extends Applet implements MouseListener, MouseMotionListener {
 					}
 				}
 			}
+			// TODO Bug with dragging (clicking can make a card teleport to the foundation)
 			hand.setCurrentPosition(114 + (hand.getLength() - 1) * 30, 60);
 			repaint();
 		}
