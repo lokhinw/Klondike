@@ -49,9 +49,9 @@ public class Main extends Applet implements MouseListener, MouseMotionListener {
 				stock.removeTopCard();
 			}
 		}
-		 for (int i = 0; i < 19; i++) {
-		 stock.removeTopCard();
-		 }
+		for (int i = 0; i < 19; i++) {
+			stock.removeTopCard();
+		}
 	}
 
 	public void paint(Graphics g) {
@@ -112,7 +112,7 @@ public class Main extends Applet implements MouseListener, MouseMotionListener {
 	}
 
 	public void mouseReleased(MouseEvent e) {
-		hand.setCurrentPosition(114, 60);
+		hand.setCurrentPosition(114 + (hand.getLength() - 1) * 30, 60);
 		repaint();
 	}
 
@@ -160,6 +160,7 @@ public class Main extends Applet implements MouseListener, MouseMotionListener {
 					}
 				}
 			}
+			hand.setCurrentPosition(114 + (hand.getLength() - 1) * 30, 60);
 			repaint();
 		}
 	}

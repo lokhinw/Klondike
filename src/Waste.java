@@ -8,9 +8,9 @@ public class Waste extends Deck {
 		currentPosY = 0;
 	}
 
-	public void setCurrentPosition(int x, int y) {
-		currentPosX = x;
-		currentPosY = y;
+	public void setCurrentPosition(int nCurrentPosX, int nCurrentPosY) {
+		currentPosX = nCurrentPosX;
+		currentPosY = nCurrentPosY;
 	}
 
 	public int getCurrentPositionX() {
