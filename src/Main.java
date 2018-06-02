@@ -15,7 +15,7 @@ public class Main extends Applet implements MouseListener, MouseMotionListener {
 
 	final int CARD_HEIGHT = 80;
 	final int CARD_WIDTH = 56;
-	
+
 	int score = 0;
 
 	public void init() {
@@ -35,8 +35,8 @@ public class Main extends Applet implements MouseListener, MouseMotionListener {
 		hand.setCenter(114, 60);
 		hand.setColor(Color.ORANGE);
 
-		//stock.shuffle();
- 
+		// stock.shuffle();
+
 		for (int i = 0; i < 4; i++) {
 			foundation[i] = new Foundation();
 			foundation[i].setCenter(223 + (69 * i) + CARD_WIDTH / 2, 20 + CARD_HEIGHT / 2);
@@ -114,12 +114,12 @@ public class Main extends Applet implements MouseListener, MouseMotionListener {
 
 	public void mouseDragged(MouseEvent e) {
 		for (int i = 0; i < 7; i++) {
-			if (tableau[i].isPointInside(e.getX(), e.getY()) == true) {
+			if (tableau[i].isDraggable()) {
 				tableau[i].setCurrentPosition(e.getX(), e.getY());
 				repaint();
 			}
 		}
-		if (hand.isPointInside(e.getX(), e.getY()) == true) {
+		if (hand.isDraggable()) {
 			hand.setCurrentPosition(e.getX(), e.getY());
 			repaint();
 		}
@@ -145,9 +145,22 @@ public class Main extends Applet implements MouseListener, MouseMotionListener {
 			tableau[i].setCurrentPosition(44 + (69 * i), 160 + (tableau[i].getLength() - 1) * 30);
 			repaint();
 		}
+		hand.setDraggable(false);
+		for (int i = 0; i < 7; i++) {
+			tableau[i].setDraggable(false);
+		}
 	}
 
 	public void mousePressed(MouseEvent e) {
+		if (hand.isPointInside(e.getX(), e.getY()) == true) {
+			hand.setDraggable(true);
+		}
+
+		for (int i = 0; i < 7; i++) {
+			if (tableau[i].isPointInside(e.getX(), e.getY())) {
+				tableau[i].setDraggable(true);
+			}
+		}
 	}
 
 	public void mouseMoved(MouseEvent e) {

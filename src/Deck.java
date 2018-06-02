@@ -4,7 +4,7 @@ import hsa.Console;
 
 public class Deck extends Shape {
 	protected Vector deck = new Vector(0, 1);
-
+	
 	public Deck() {
 		setSize(120);
 		setCenter(100, 100);
