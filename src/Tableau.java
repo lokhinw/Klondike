@@ -1,7 +1,9 @@
+import java.awt.Color;
 import java.awt.Graphics;
 
 public class Tableau extends Deck {
-	private int currentPosX, currentPosY;
+	private int currentPosX, currentPosY, currentValue;
+	private int currentSuit;
 
 	public Tableau() {
 		currentPosX = 0;
@@ -19,6 +21,28 @@ public class Tableau extends Deck {
 
 	public int getCurrentPositionY() {
 		return currentPosY;
+	}
+
+	public boolean checkSuit(int suit) {
+		currentSuit = getTopCard().getSuit();
+		if ((currentSuit == 1 || currentSuit == 3) && (suit == 2 || suit == 4)) {
+			return true;
+		}
+		if ((currentSuit == 2 || currentSuit == 4) && (suit == 1 || suit == 3)) {
+			return true;
+		}
+		return false;
+	}
+
+	public boolean isValidMove(int x, int y, int value, int suit) {
+		if (x >= currentPosX - getWidth() / 2 && x <= currentPosX + getWidth() / 2 && y >= currentPosY - getHeight() / 2
+				&& y <= currentPosY + getHeight() / 2) {
+			currentValue = getTopCard().getFaceValue();
+			if (checkSuit(suit) && currentValue - 1 == value) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public boolean isPointInside(int x, int y) {

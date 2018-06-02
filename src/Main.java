@@ -65,7 +65,6 @@ public class Main extends Applet implements MouseListener, MouseMotionListener {
 				tableau[i].addCard(card);
 				stock.removeTopCard();
 			}
-			System.out.println(tableau[i].getLength());
 			tableau[i].setCurrentPosition(44 + (69 * i), 160 + (tableau[i].getLength() - 1) * 30);
 		}
 		// for (int i = 0; i < 20; i++) {
@@ -150,11 +149,22 @@ public class Main extends Applet implements MouseListener, MouseMotionListener {
 					}
 				}
 			}
+			for (int i = 0; i < 7; i++) {
+				if (hand.getLength() > 0) {
+					if (tableau[i].isValidMove(e.getX(), e.getY(), hand.getTopCard().getFaceValue(),
+							hand.getTopCard().getSuit()) == true) {
+						tableau[i].setCurrentPosition(44 + (69 * i), 160 + (tableau[i].getLength() - 1) * 30);
+						tableau[i].addCard(hand.getTopCard());
+						tableau[currentDeck - 1].flipTopCard();
+						hand.removeTopCard();
+						score += 5;
+					}
+				}
+			}
 		}
 
 		if (hand.getLength() > 0 && currentDeck == 0) {
 			waste[1].addCard(hand.getTopCard());
-			// System.out.println("hi");
 			hand.removeTopCard();
 			hand.setDraggable(false);
 		}
@@ -162,7 +172,6 @@ public class Main extends Applet implements MouseListener, MouseMotionListener {
 		for (int i = 0; i < 7; i++) {
 			if (hand.getLength() > 0 && currentDeck == i + 1) {
 				tableau[i].addCard(hand.getTopCard());
-				// System.out.println("hi");
 				hand.removeTopCard();
 				hand.setDraggable(false);
 				tableau[i].setCurrentPosition(44 + (69 * i), 160 + (tableau[i].getLength() - 1) * 30);
@@ -176,7 +185,6 @@ public class Main extends Applet implements MouseListener, MouseMotionListener {
 		if (waste[1].isPointInside(e.getX(), e.getY()) == true && waste[1].getLength() > 0) {
 			currentDeck = 0;
 			hand.addCard(waste[1].getTopCard());
-			// System.out.println("hi");
 			waste[1].removeTopCard();
 			hand.setDraggable(true);
 		}
@@ -185,7 +193,6 @@ public class Main extends Applet implements MouseListener, MouseMotionListener {
 			if (tableau[i].isPointInside(e.getX(), e.getY()) && tableau[i].getLength() > 0) {
 				currentDeck = i + 1;
 				hand.addCard(tableau[i].getTopCard());
-				// System.out.println("hi");
 				tableau[i].removeTopCard();
 				hand.setDraggable(true);
 			}
