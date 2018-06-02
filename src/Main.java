@@ -41,10 +41,8 @@ public class Main extends Applet implements MouseListener, MouseMotionListener {
 		hand.setSize(CARD_HEIGHT);
 		hand.setCenter(114, 60);
 		hand.setColor(Color.ORANGE);
-//		 for (int i = 0; i < 21; i++) {
-//		 stock.removeTopCard();
-//		 }
-//		stock.shuffle();
+
+		stock.shuffle();
 
 		for (int i = 0; i < 4; i++) {
 			foundation[i] = new Foundation();
@@ -68,9 +66,9 @@ public class Main extends Applet implements MouseListener, MouseMotionListener {
 			}
 			tableau[i].setCurrentPosition(44 + (69 * i), 160 + (tableau[i].getLength() - 1) * 30);
 		}
-//		 for (int i = 0; i < 20; i++) {
-//		 stock.removeTopCard();
-//		 }
+		// for (int i = 0; i < 20; i++) {
+		// stock.removeTopCard();
+		// }
 	}
 
 	public void paint(Graphics g) {
@@ -154,7 +152,6 @@ public class Main extends Applet implements MouseListener, MouseMotionListener {
 				if (hand.getLength() > 0 && currentDeck != i + 1) {
 					if (tableau[i].isValidMove(e.getX(), e.getY(), hand.getTopCard().getFaceValue(),
 							hand.getTopCard().getSuit()) == true) {
-						tableau[i].setCurrentPosition(44 + (69 * i), 160 + (tableau[i].getLength() - 1) * 30);
 						tableau[i].addCard(hand.getTopCard());
 						if (currentDeck == 0) {
 							waste[1].setCurrentPosition(114 + (waste[1].getLength() - 1) * 30, 60);
@@ -165,6 +162,7 @@ public class Main extends Applet implements MouseListener, MouseMotionListener {
 						score += 5;
 					}
 				}
+				tableau[i].setCurrentPosition(44 + (69 * i), 160 + (tableau[i].getLength() - 1) * 30);
 			}
 		}
 
