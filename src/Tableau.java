@@ -37,8 +37,12 @@ public class Tableau extends Deck {
 	public boolean isValidMove(int x, int y, int value, int suit) {
 		if (x >= currentPosX - getWidth() / 2 && x <= currentPosX + getWidth() / 2 && y >= currentPosY - getHeight() / 2
 				&& y <= currentPosY + getHeight() / 2) {
-			currentValue = getTopCard().getFaceValue();
-			if (checkSuit(suit) && currentValue - 1 == value) {
+			if (deck.size() > 0) {
+				currentValue = getTopCard().getFaceValue();
+				if (checkSuit(suit) && currentValue - 1 == value) {
+					return true;
+				}
+			} else if (value == 13) {
 				return true;
 			}
 		}
