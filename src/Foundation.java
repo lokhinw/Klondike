@@ -30,7 +30,7 @@ public class Foundation extends Deck {
 				currentValue = value;
 				currentSuit = suit;
 				return true;
-			} else if (currentValue++ == value && currentSuit == suit) {
+			} else if (currentValue + 1 == value && currentSuit == suit) {
 				currentValue = value;
 				currentSuit = suit;
 				return true;

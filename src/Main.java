@@ -15,6 +15,8 @@ public class Main extends Applet implements MouseListener, MouseMotionListener {
 
 	final int CARD_HEIGHT = 80;
 	final int CARD_WIDTH = 56;
+	
+	int score = 0;
 
 	public void init() {
 		setSize(500, 550);
@@ -33,8 +35,8 @@ public class Main extends Applet implements MouseListener, MouseMotionListener {
 		hand.setCenter(114, 60);
 		hand.setColor(Color.ORANGE);
 
-		// stock.shuffle();
-
+		//stock.shuffle();
+ 
 		for (int i = 0; i < 4; i++) {
 			foundation[i] = new Foundation();
 			foundation[i].setCenter(223 + (69 * i) + CARD_WIDTH / 2, 20 + CARD_HEIGHT / 2);
@@ -67,7 +69,7 @@ public class Main extends Applet implements MouseListener, MouseMotionListener {
 
 		bufferGraphics.clearRect(0, 0, 500, 550);
 
-		showStatus("Score: 0");
+		showStatus("Score: " + score);
 
 		bufferGraphics.setColor(new Color(1, 173, 86));
 		bufferGraphics.fillRoundRect(16, 20, CARD_WIDTH, CARD_HEIGHT, 5, 5);
@@ -131,6 +133,7 @@ public class Main extends Applet implements MouseListener, MouseMotionListener {
 							hand.getTopCard().getSuit()) == true) {
 						foundation[i].addCard(hand.getTopCard());
 						hand.removeTopCard();
+						score += 5;
 					}
 				}
 			}
@@ -142,7 +145,6 @@ public class Main extends Applet implements MouseListener, MouseMotionListener {
 			tableau[i].setCurrentPosition(44 + (69 * i), 160 + (tableau[i].getLength() - 1) * 30);
 			repaint();
 		}
-
 	}
 
 	public void mousePressed(MouseEvent e) {
