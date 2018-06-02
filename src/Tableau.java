@@ -32,11 +32,7 @@ public class Tableau extends Deck {
 	public void draw(Graphics g) {
 		for (int i = 0; i < deck.size(); i++) {
 			Card card = (Card) getCard(i);
-			if (i == deck.size() - 1) {
-				card.setCenter(currentPosX, currentPosY);
-			} else {
-				card.setCenter(getCenterX(), getCenterY() + (i * 30));
-			}
+			card.setCenter(getCenterX(), getCenterY() + (i * 30));
 			card.setColor(getColor());
 			card.setSize(getHeight());
 			card.draw(g);

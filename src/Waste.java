@@ -30,7 +30,7 @@ public class Waste extends Deck {
 	}
 
 	public void draw(Graphics g) {
-		if (deck.size() >= 3) {
+		if (deck.size() > 3) {
 			for (int i = 0; i < 3; i++) {
 				Card card = (Card) getCard(deck.size() - 3 + i);
 				card.setCenter(getCenterX() + (i * 30), getCenterY());
