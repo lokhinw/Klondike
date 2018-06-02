@@ -6,7 +6,7 @@ public class Main extends Applet implements MouseListener, MouseMotionListener {
 
 	Deck stock = new Deck('s');
 	Waste waste = new Waste();
-	Waste hand = new Waste();
+	Deck hand = new Deck();
 	Tableau[] tableau = new Tableau[7];
 	Foundation[] foundation = new Foundation[4];
 
@@ -30,6 +30,10 @@ public class Main extends Applet implements MouseListener, MouseMotionListener {
 		stock.setSize(CARD_HEIGHT);
 		stock.setCenter(44, 60);
 		stock.setColor(Color.ORANGE);
+
+		waste.setSize(CARD_HEIGHT);
+		waste.setCenter(114, 60);
+		waste.setColor(Color.ORANGE);
 
 		hand.setSize(CARD_HEIGHT);
 		hand.setCenter(114, 60);
@@ -60,9 +64,9 @@ public class Main extends Applet implements MouseListener, MouseMotionListener {
 			System.out.println(tableau[i].getLength());
 			tableau[i].setCurrentPosition(44 + (69 * i), 160 + (tableau[i].getLength() - 1) * 30);
 		}
-		// for (int i = 0; i < 19; i++) {
-		// stock.removeTopCard();
-		// }
+		for (int i = 0; i < 23; i++) {
+			stock.removeTopCard();
+		}
 	}
 
 	public void paint(Graphics g) {
@@ -103,8 +107,8 @@ public class Main extends Applet implements MouseListener, MouseMotionListener {
 		for (int i = 0; i < 4; i++) {
 			foundation[i].draw(bufferGraphics);
 		}
+		waste.draw(bufferGraphics);
 		hand.draw(bufferGraphics);
-
 		g.drawImage(offscreen, 0, 0, this);
 	}
 
@@ -120,7 +124,7 @@ public class Main extends Applet implements MouseListener, MouseMotionListener {
 			}
 		}
 		if (hand.isDraggable()) {
-			hand.setCurrentPosition(e.getX(), e.getY());
+			hand.setCenter(e.getX(), e.getY());
 			repaint();
 		}
 	}
@@ -137,22 +141,32 @@ public class Main extends Applet implements MouseListener, MouseMotionListener {
 					}
 				}
 			}
-			hand.setCurrentPosition(114 + (hand.getLength() - 1) * 30, 60);
+			waste.setCurrentPosition(114 + (hand.getLength() - 1) * 30, 60);
 			repaint();
+		}
+
+		if (hand.getLength() > 0) {
+			waste.addCard(hand.getTopCard());
+			System.out.println("hi");
+			hand.removeTopCard();
+			hand.setDraggable(false);
 		}
 
 		for (int i = 0; i < 7; i++) {
 			tableau[i].setCurrentPosition(44 + (69 * i), 160 + (tableau[i].getLength() - 1) * 30);
 			repaint();
 		}
-		hand.setDraggable(false);
+
 		for (int i = 0; i < 7; i++) {
 			tableau[i].setDraggable(false);
 		}
 	}
 
 	public void mousePressed(MouseEvent e) {
-		if (hand.isPointInside(e.getX(), e.getY()) == true) {
+		if (waste.isPointInside(e.getX(), e.getY()) == true) {
+			hand.addCard(waste.getTopCard());
+			System.out.println("hi");
+			waste.removeTopCard();
 			hand.setDraggable(true);
 		}
 
@@ -170,14 +184,14 @@ public class Main extends Applet implements MouseListener, MouseMotionListener {
 
 	public void mouseClicked(MouseEvent e) {
 		if (stock.isPointInside(e.getX(), e.getY()) == true) {
-			if (hand.getLength() > 0) {
-				int j = hand.getLength();
-				for (int i = 0; i < j; i++) {
-					Card card = hand.getBottomCard();
-					waste.addCard(card);
-					hand.removeBottomCard();
-				}
-			}
+			// if (hand.getLength() > 0) {
+			// int j = hand.getLength();
+			// for (int i = 0; i < j; i++) {
+			// Card card = hand.getBottomCard();
+			// waste.addCard(card);
+			// hand.removeBottomCard();
+			// }
+			// }
 			if (stock.getLength() == 0) {
 				int j = waste.getLength();
 				for (int i = 0; i < j; i++) {
@@ -191,7 +205,7 @@ public class Main extends Applet implements MouseListener, MouseMotionListener {
 					for (int i = 0; i < 3; i++) {
 						Card card = stock.getTopCard();
 						card.setFaceUp(true);
-						hand.addCard(card);
+						waste.addCard(card);
 						stock.removeTopCard();
 					}
 				} else {
@@ -199,13 +213,13 @@ public class Main extends Applet implements MouseListener, MouseMotionListener {
 					for (int i = 0; i < j; i++) {
 						Card card = stock.getTopCard();
 						card.setFaceUp(true);
-						hand.addCard(card);
+						waste.addCard(card);
 						stock.removeTopCard();
 					}
 				}
 			}
 			// TODO Bug with dragging (clicking can make a card teleport to the foundation)
-			hand.setCurrentPosition(114 + (hand.getLength() - 1) * 30, 60);
+			waste.setCurrentPosition(114 + (hand.getLength() - 1) * 30, 60);
 			repaint();
 		}
 	}

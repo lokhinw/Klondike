@@ -30,16 +30,23 @@ public class Waste extends Deck {
 	}
 
 	public void draw(Graphics g) {
-		for (int i = 0; i < deck.size(); i++) {
-			Card card = (Card) getCard(i);
-			if (i == deck.size() - 1) {
-				card.setCenter(currentPosX, currentPosY);
-			} else {
+		if (deck.size() >= 3) {
+			for (int i = 0; i < 3; i++) {
+				Card card = (Card) getCard(deck.size() - 3 + i);
 				card.setCenter(getCenterX() + (i * 30), getCenterY());
+				card.setColor(getColor());
+				card.setSize(getHeight());
+				card.draw(g);
 			}
-			card.setColor(getColor());
-			card.setSize(getHeight());
-			card.draw(g);
+		} else {
+			for (int i = 0; i < deck.size(); i++) {
+				Card card = (Card) getCard(i);
+				card.setCenter(getCenterX() + (i * 30), getCenterY());
+				card.setColor(getColor());
+				card.setSize(getHeight());
+				card.draw(g);
+			}
 		}
+
 	}
 }
