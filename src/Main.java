@@ -155,11 +155,11 @@ public class Main extends Applet implements MouseListener, MouseMotionListener {
 						tableau[i].addCard(hand.getTopCard());
 						if (currentDeck == 0) {
 							waste[1].setCurrentPosition(114 + (waste[1].getLength() - 1) * 30, 60);
+							score += 5;
 						} else {
 							tableau[currentDeck - 1].flipTopCard();
 						}
 						hand.removeTopCard();
-						score += 5;
 					}
 				}
 				tableau[i].setCurrentPosition(44 + (69 * i), 160 + (tableau[i].getLength() - 1) * 30);
