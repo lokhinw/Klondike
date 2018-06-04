@@ -4,7 +4,7 @@ import hsa.Console;
 
 public class Deck extends Shape {
 	protected Vector deck = new Vector(0, 1);
-	
+
 	public Deck() {
 		setSize(120);
 		setCenter(100, 100);
@@ -109,6 +109,12 @@ public class Deck extends Shape {
 			Collections.shuffle(deck);
 		}
 	}
+	
+	public void reverse() {
+		if (deck.size() > 0) {
+			Collections.reverse(deck);
+		}
+	}
 
 	public void draw(Graphics g) {
 		if (deck.size() > 0) {
@@ -127,6 +133,16 @@ public class Deck extends Shape {
 				for (int i = 0; i < Math.ceil((float) deck.size()) / 3; i++) {
 					Card card = (Card) deck.lastElement();
 					card.setCenter(getCenterX() - i, getCenterY() - i);
+					card.setColor(getColor());
+					card.setSize(getHeight());
+					card.draw(g);
+				}
+			}
+
+			if (deckType == 'h') {
+				for (int i = 0; i < deck.size(); i++) {
+					Card card = (Card) getCard(i);
+					card.setCenter(getCenterX(), getCenterY() + (i * 30));
 					card.setColor(getColor());
 					card.setSize(getHeight());
 					card.draw(g);
