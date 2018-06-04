@@ -20,12 +20,12 @@ public class Main extends Applet implements MouseListener, MouseMotionListener {
 	int score = 0;
 
 	public void init() {
-		setSize(500, 550);
+		setSize(500, 650);
 		setBackground(new Color(7, 89, 45));
 		addMouseListener(this);
 		addMouseMotionListener(this);
 
-		offscreen = createImage(500, 550);
+		offscreen = createImage(500, 650);
 		bufferGraphics = offscreen.getGraphics();
 
 		stock.setSize(CARD_HEIGHT);
@@ -140,11 +140,16 @@ public class Main extends Applet implements MouseListener, MouseMotionListener {
 						foundation[i].addCard(hand.getTopCard());
 						if (currentDeck == 0) {
 							waste[1].setCurrentPosition(114 + (waste[1].getLength() - 1) * 30, 60);
-						} else {
+						} else if (currentDeck > 0 && currentDeck < 8) {
 							tableau[currentDeck - 1].flipTopCard();
+							if (currentDeck < 8) {
+								score += 5;
+							}
 						}
 						hand.removeTopCard();
-						score += 10;
+						if (currentDeck < 8) {
+							score += 10;
+						}
 					}
 				}
 			}
@@ -156,11 +161,19 @@ public class Main extends Applet implements MouseListener, MouseMotionListener {
 						tableau[i].addCard(hand.getTopCard());
 						if (currentDeck == 0) {
 							waste[1].setCurrentPosition(114 + (waste[1].getLength() - 1) * 30, 60);
-							score += 5;
 						} else {
-							tableau[currentDeck - 1].flipTopCard();
+							if (tableau[currentDeck - 1].getLength() > 0
+									&& !tableau[currentDeck - 1].getTopCard().getFaceUp()) {
+								tableau[currentDeck - 1].flipTopCard();
+								if (currentDeck < 8) {
+									score += 5;
+								}
+							}
 						}
 						hand.removeTopCard();
+						if (currentDeck > 8) {
+							score -= 15;
+						}
 					}
 				} else if (hand.getLength() > 1 && currentDeck != i + 1) {
 					if (tableau[i].isValidMove(e.getX(), e.getY(), hand.getBottomCard().getFaceValue(),
@@ -170,16 +183,28 @@ public class Main extends Applet implements MouseListener, MouseMotionListener {
 							tableau[i].addCard(hand.getBottomCard());
 							hand.removeBottomCard();
 						}
-						tableau[currentDeck - 1].flipTopCard();
+						if (tableau[currentDeck - 1].getLength() > 0
+								&& !tableau[currentDeck - 1].getTopCard().getFaceUp()) {
+							tableau[currentDeck - 1].flipTopCard();
+						}
 					}
 				}
 				tableau[i].setCurrentPosition(44 + (69 * i), 160 + (tableau[i].getLength() - 1) * 30);
 			}
 		}
+
 		if (hand.getLength() > 0 && currentDeck == 0) {
 			waste[1].addCard(hand.getTopCard());
 			hand.removeTopCard();
 			hand.setDraggable(false);
+		}
+
+		for (int i = 0; i < 4; i++) {
+			if (hand.getLength() == 1 && currentDeck == i + 8) {
+				foundation[i].addCard(hand.getTopCard());
+				hand.removeTopCard();
+				hand.setDraggable(false);
+			}
 		}
 
 		for (int i = 0; i < 7; i++) {
@@ -207,6 +232,15 @@ public class Main extends Applet implements MouseListener, MouseMotionListener {
 	}
 
 	public void mousePressed(MouseEvent e) {
+
+		for (int i = 0; i < 4; i++) {
+			if (foundation[i].isPointInside(e.getX(), e.getY()) == true && foundation[i].getLength() > 0) {
+				currentDeck = i + 8;
+				hand.addCard(foundation[i].getTopCard());
+				foundation[i].removeTopCard();
+				hand.setDraggable(true);
+			}
+		}
 
 		for (int i = 0; i < 7; i++) {
 			for (int j = 0; j < tableau[i].getMaxDrag(); j++) {

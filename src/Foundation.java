@@ -26,7 +26,7 @@ public class Foundation extends Deck {
 	public boolean isValidMove(int x, int y, int value, int suit) {
 		if (x >= getCenterX() - getWidth() / 2 && x <= getCenterX() + getWidth() / 2
 				&& y >= getCenterY() - getHeight() / 2 && y <= getCenterY() + getHeight() / 2) {
-			if (currentValue == 0 && value == 1) {
+			if (deck.size() == 0 || currentValue == 0 && value == 1) {
 				currentValue = value;
 				currentSuit = suit;
 				return true;
