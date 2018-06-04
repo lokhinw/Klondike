@@ -140,16 +140,17 @@ public class Main extends Applet implements MouseListener, MouseMotionListener {
 						foundation[i].addCard(hand.getTopCard());
 						if (currentDeck == 0) {
 							waste[1].setCurrentPosition(114 + (waste[1].getLength() - 1) * 30, 60);
-						} else if (currentDeck > 0 && currentDeck < 8) {
-							tableau[currentDeck - 1].flipTopCard();
-							if (currentDeck < 8) {
-								score += 5;
+						} else if (currentDeck > 0 && currentDeck < 8)
+							if (tableau[currentDeck - 1].getLength() > 0
+									&& !tableau[currentDeck - 1].getTopCard().getFaceUp()) {
+								{
+									tableau[currentDeck - 1].flipTopCard();
+									score += 5;
+								}
+
 							}
-						}
 						hand.removeTopCard();
-						if (currentDeck < 8) {
-							score += 10;
-						}
+						score += 10;
 					}
 				}
 			}
@@ -161,14 +162,16 @@ public class Main extends Applet implements MouseListener, MouseMotionListener {
 						tableau[i].addCard(hand.getTopCard());
 						if (currentDeck == 0) {
 							waste[1].setCurrentPosition(114 + (waste[1].getLength() - 1) * 30, 60);
+							score += 5;
 						} else {
-							if (tableau[currentDeck - 1].getLength() > 0
-									&& !tableau[currentDeck - 1].getTopCard().getFaceUp()) {
-								tableau[currentDeck - 1].flipTopCard();
-								if (currentDeck < 8) {
+							if (currentDeck < 8) {
+								if (tableau[currentDeck - 1].getLength() > 0
+										&& !tableau[currentDeck - 1].getTopCard().getFaceUp()) {
+									tableau[currentDeck - 1].flipTopCard();
 									score += 5;
 								}
 							}
+
 						}
 						hand.removeTopCard();
 						if (currentDeck > 8) {
@@ -228,6 +231,10 @@ public class Main extends Applet implements MouseListener, MouseMotionListener {
 			}
 		}
 
+		if (checkWin()) {
+			System.out.println("YOU WON!");
+		}
+
 		repaint();
 	}
 
@@ -238,6 +245,12 @@ public class Main extends Applet implements MouseListener, MouseMotionListener {
 				currentDeck = i + 8;
 				hand.addCard(foundation[i].getTopCard());
 				foundation[i].removeTopCard();
+				if (foundation[i].getLength() > 0) {
+					foundation[i].setCurrentValue(foundation[i].getTopCard().getFaceValue());
+				} else {
+					foundation[i].setCurrentValue(0);
+				}
+
 				hand.setDraggable(true);
 			}
 		}
@@ -271,6 +284,15 @@ public class Main extends Applet implements MouseListener, MouseMotionListener {
 				hand.setDraggable(true);
 			}
 		}
+	}
+
+	public boolean checkWin() {
+		for (int i = 0; i < 4; i++) {
+			if (foundation[i].getLength() != 13) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	public void mouseMoved(MouseEvent e) {

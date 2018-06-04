@@ -10,6 +10,23 @@ public class Foundation extends Deck {
 	// currentPosY = 0;
 	// }
 	//
+
+	public void setCurrentValue(int nCurrentValue) {
+		currentValue = nCurrentValue;
+	}
+
+	public void setCurrentSuit(int nCurrentSuit) {
+		currentSuit = nCurrentSuit;
+	}
+
+	public int getCurrentValue() {
+		return currentValue;
+	}
+
+	public int getCurrentSuit() {
+		return currentSuit;
+	}
+
 	// public void setCurrentPosition(int nCurrentPosX, int nCurrentPosY) {
 	// currentPosX = nCurrentPosX;
 	// currentPosY = nCurrentPosY;
@@ -26,7 +43,7 @@ public class Foundation extends Deck {
 	public boolean isValidMove(int x, int y, int value, int suit) {
 		if (x >= getCenterX() - getWidth() / 2 && x <= getCenterX() + getWidth() / 2
 				&& y >= getCenterY() - getHeight() / 2 && y <= getCenterY() + getHeight() / 2) {
-			if (deck.size() == 0 || currentValue == 0 && value == 1) {
+			if (currentValue == 0 && value == 1) {
 				currentValue = value;
 				currentSuit = suit;
 				return true;
