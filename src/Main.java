@@ -73,7 +73,7 @@ public class Main extends Applet implements MouseListener, MouseMotionListener {
 
 	public void paint(Graphics g) {
 
-		bufferGraphics.clearRect(0, 0, 500, 550);
+		bufferGraphics.clearRect(0, 0, 500, 650);
 
 		showStatus("Score: " + score);
 
