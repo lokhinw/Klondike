@@ -128,7 +128,6 @@ public class Deck extends Shape {
 
 	public void draw(Graphics g, char deckType) {
 		if (deck.size() > 0) {
-			// TODO: Fix when deck is not a multiple of 3
 			if (deckType == 's') {
 				for (int i = 0; i < Math.ceil((float) deck.size()) / 3; i++) {
 					Card card = (Card) deck.lastElement();
@@ -140,37 +139,6 @@ public class Deck extends Shape {
 			}
 
 			if (deckType == 'h') {
-				for (int i = 0; i < deck.size(); i++) {
-					Card card = (Card) getCard(i);
-					card.setCenter(getCenterX(), getCenterY() + (i * 30));
-					card.setColor(getColor());
-					card.setSize(getHeight());
-					card.draw(g);
-				}
-			}
-
-			// TODO: Fix when there are less than 3 cards remaining
-			if (deckType == 'w') {
-				// if (deck.size() % 3 == 0) {
-				// for (int i = 0; i < 3; i++) {
-				// Card card = (Card) getCard(deck.size() - 3 + i);
-				// card.setCenter(getCenterX() + (i * 30), getCenterY());
-				// card.setColor(getColor());
-				// card.setSize(getHeight());
-				// card.draw(g);
-				// }
-				// } else {
-				for (int i = 0; i < deck.size(); i++) {
-					Card card = (Card) getCard(i);
-					card.setCenter(getCenterX() + (i * 30), getCenterY());
-					card.setColor(getColor());
-					card.setSize(getHeight());
-					card.draw(g);
-					// }
-				}
-			}
-
-			if (deckType == 't') {
 				for (int i = 0; i < deck.size(); i++) {
 					Card card = (Card) getCard(i);
 					card.setCenter(getCenterX(), getCenterY() + (i * 30));

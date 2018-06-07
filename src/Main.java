@@ -4,24 +4,25 @@ import java.awt.event.*;
 
 public class Main extends Applet implements MouseListener, MouseMotionListener {
 
-	Deck stock = new Deck('s');
-	Waste[] waste = new Waste[2];
-	Deck hand = new Deck('h');
-	Tableau[] tableau = new Tableau[7];
-	Foundation[] foundation = new Foundation[4];
+	private Deck stock = new Deck('s');
+	private Deck hand = new Deck('h');
+	private Waste[] waste = new Waste[2];
+	private Tableau[] tableau = new Tableau[7];
+	private Foundation[] foundation = new Foundation[4];
 
-	Graphics bufferGraphics;
-	Image offscreen;
+	private Graphics bufferGraphics;
+	private Image offscreen;
 
-	final int CARD_HEIGHT = 80;
-	final int CARD_WIDTH = 56;
+	private final int CARD_HEIGHT = 80;
+	private final int CARD_WIDTH = 56;
 
-	int currentDeck = 0;
-	int score = 0;
+	private int currentDeck = 0;
+	private int score = 0;
 
 	public void init() {
 		setSize(500, 650);
 		setBackground(new Color(7, 89, 45));
+
 		addMouseListener(this);
 		addMouseMotionListener(this);
 
@@ -66,9 +67,6 @@ public class Main extends Applet implements MouseListener, MouseMotionListener {
 			}
 			tableau[i].setCurrentPosition(44 + (69 * i), 160 + (tableau[i].getLength() - 1) * 30);
 		}
-		// for (int i = 0; i < 20; i++) {
-		// stock.removeTopCard();
-		// }
 	}
 
 	public void paint(Graphics g) {
@@ -109,8 +107,10 @@ public class Main extends Applet implements MouseListener, MouseMotionListener {
 		for (int i = 0; i < 4; i++) {
 			foundation[i].draw(bufferGraphics);
 		}
+
 		waste[1].draw(bufferGraphics);
 		hand.draw(bufferGraphics, 'h');
+
 		g.drawImage(offscreen, 0, 0, this);
 	}
 
@@ -118,13 +118,16 @@ public class Main extends Applet implements MouseListener, MouseMotionListener {
 		paint(g);
 	}
 
+	public boolean checkWin() {
+		for (int i = 0; i < 4; i++) {
+			if (foundation[i].getLength() != 13) {
+				return false;
+			}
+		}
+		return true;
+	}
+
 	public void mouseDragged(MouseEvent e) {
-		// for (int i = 0; i < 7; i++) {
-		// if (tableau[i].isDraggable()) {
-		// tableau[i].setCurrentPosition(e.getX(), e.getY());
-		// repaint();
-		// }
-		// }
 		if (hand.isDraggable()) {
 			hand.setCenter(e.getX(), e.getY());
 			repaint();
@@ -136,11 +139,13 @@ public class Main extends Applet implements MouseListener, MouseMotionListener {
 			for (int i = 0; i < 4; i++) {
 				if (hand.getLength() > 0) {
 					if (foundation[i].isValidMove(e.getX(), e.getY(), hand.getTopCard().getFaceValue(),
-							hand.getTopCard().getSuit()) == true) {
+							hand.getTopCard().getSuit())) {
 						foundation[i].addCard(hand.getTopCard());
 						if (currentDeck == 0) {
 							waste[1].setCurrentPosition(114 + (waste[1].getLength() - 1) * 30, 60);
-						} else if (currentDeck > 0 && currentDeck < 8)
+							score += 10;
+						} else if (currentDeck > 0 && currentDeck < 8) {
+							score += 10;
 							if (tableau[currentDeck - 1].getLength() > 0
 									&& !tableau[currentDeck - 1].getTopCard().getFaceUp()) {
 								{
@@ -149,8 +154,8 @@ public class Main extends Applet implements MouseListener, MouseMotionListener {
 								}
 
 							}
+						}
 						hand.removeTopCard();
-						score += 10;
 					}
 				}
 			}
@@ -158,7 +163,7 @@ public class Main extends Applet implements MouseListener, MouseMotionListener {
 			for (int i = 0; i < 7; i++) {
 				if (hand.getLength() == 1 && currentDeck != i + 1) {
 					if (tableau[i].isValidMove(e.getX(), e.getY(), hand.getTopCard().getFaceValue(),
-							hand.getTopCard().getSuit()) == true) {
+							hand.getTopCard().getSuit())) {
 						tableau[i].addCard(hand.getTopCard());
 						if (currentDeck == 0) {
 							waste[1].setCurrentPosition(114 + (waste[1].getLength() - 1) * 30, 60);
@@ -180,7 +185,7 @@ public class Main extends Applet implements MouseListener, MouseMotionListener {
 					}
 				} else if (hand.getLength() > 1 && currentDeck != i + 1) {
 					if (tableau[i].isValidMove(e.getX(), e.getY(), hand.getBottomCard().getFaceValue(),
-							hand.getBottomCard().getSuit()) == true) {
+							hand.getBottomCard().getSuit())) {
 						int k = hand.getLength();
 						for (int j = 0; j < k; j++) {
 							tableau[i].addCard(hand.getBottomCard());
@@ -189,6 +194,7 @@ public class Main extends Applet implements MouseListener, MouseMotionListener {
 						if (tableau[currentDeck - 1].getLength() > 0
 								&& !tableau[currentDeck - 1].getTopCard().getFaceUp()) {
 							tableau[currentDeck - 1].flipTopCard();
+							score += 5;
 						}
 					}
 				}
@@ -239,9 +245,8 @@ public class Main extends Applet implements MouseListener, MouseMotionListener {
 	}
 
 	public void mousePressed(MouseEvent e) {
-
 		for (int i = 0; i < 4; i++) {
-			if (foundation[i].isPointInside(e.getX(), e.getY()) == true && foundation[i].getLength() > 0) {
+			if (foundation[i].isPointInside(e.getX(), e.getY()) && foundation[i].getLength() > 0) {
 				currentDeck = i + 8;
 				hand.addCard(foundation[i].getTopCard());
 				foundation[i].removeTopCard();
@@ -250,7 +255,6 @@ public class Main extends Applet implements MouseListener, MouseMotionListener {
 				} else {
 					foundation[i].setCurrentValue(0);
 				}
-
 				hand.setDraggable(true);
 			}
 		}
@@ -269,7 +273,7 @@ public class Main extends Applet implements MouseListener, MouseMotionListener {
 			}
 		}
 
-		if (waste[1].isPointInside(e.getX(), e.getY()) == true && waste[1].getLength() > 0) {
+		if (waste[1].isPointInside(e.getX(), e.getY()) && waste[1].getLength() > 0) {
 			currentDeck = 0;
 			hand.addCard(waste[1].getTopCard());
 			waste[1].removeTopCard();
@@ -286,22 +290,8 @@ public class Main extends Applet implements MouseListener, MouseMotionListener {
 		}
 	}
 
-	public boolean checkWin() {
-		for (int i = 0; i < 4; i++) {
-			if (foundation[i].getLength() != 13) {
-				return false;
-			}
-		}
-		return true;
-	}
-
-	public void mouseMoved(MouseEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
 	public void mouseClicked(MouseEvent e) {
-		if (stock.isPointInside(e.getX(), e.getY()) == true) {
+		if (stock.isPointInside(e.getX(), e.getY())) {
 			if (waste[1].getLength() > 0) {
 				int j = waste[1].getLength();
 				for (int i = 0; i < j; i++) {
@@ -310,6 +300,7 @@ public class Main extends Applet implements MouseListener, MouseMotionListener {
 					waste[1].removeBottomCard();
 				}
 			}
+
 			if (stock.getLength() == 0) {
 				int j = waste[0].getLength();
 				for (int i = 0; i < j; i++) {
@@ -336,20 +327,18 @@ public class Main extends Applet implements MouseListener, MouseMotionListener {
 					}
 				}
 			}
-			// TODO Bug with dragging (clicking can make a card teleport to the foundation)
-			// System.out.println(114 + (waste[1].getLength() - 1) * 30);
+
 			waste[1].setCurrentPosition(114 + (waste[1].getLength() - 1) * 30, 60);
 			repaint();
 		}
 	}
 
-	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
+	public void mouseMoved(MouseEvent e) {
+	}
 
+	public void mouseEntered(MouseEvent e) {
 	}
 
 	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
-
 	}
 }

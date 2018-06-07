@@ -3,14 +3,6 @@ import java.awt.Graphics;
 public class Foundation extends Deck {
 	private int currentValue, currentSuit;
 
-	// private int currentPosX, currentPosY;
-	//
-	// public Waste() {
-	// currentPosX = 0;
-	// currentPosY = 0;
-	// }
-	//
-
 	public void setCurrentValue(int nCurrentValue) {
 		currentValue = nCurrentValue;
 	}
@@ -27,19 +19,6 @@ public class Foundation extends Deck {
 		return currentSuit;
 	}
 
-	// public void setCurrentPosition(int nCurrentPosX, int nCurrentPosY) {
-	// currentPosX = nCurrentPosX;
-	// currentPosY = nCurrentPosY;
-	// }
-	//
-	// public int getCurrentPositionX() {
-	// return currentPosX;
-	// }
-	//
-	// public int getCurrentPositionY() {
-	// return currentPosY;
-	// }
-	//
 	public boolean isValidMove(int x, int y, int value, int suit) {
 		if (x >= getCenterX() - getWidth() / 2 && x <= getCenterX() + getWidth() / 2
 				&& y >= getCenterY() - getHeight() / 2 && y <= getCenterY() + getHeight() / 2) {
